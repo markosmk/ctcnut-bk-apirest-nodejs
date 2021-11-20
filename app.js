@@ -1,4 +1,5 @@
 const express = require('express');
+const { errorHandler } = require('./utils/errorHandler');
 const app = express();
 
 // para recibir data en json
@@ -9,5 +10,11 @@ const serviceRoutes = require('./routes/service');
 
 // base rutas
 app.use('/api', serviceRoutes);
+app.get('*', function (req, res, next) {
+  const error = new Error(`${req.ip} tried to access ${req.originalUrl}`);
+  error.statusCode = 404;
+  next(error);
+});
+app.use(errorHandler);
 
 module.exports = app;
