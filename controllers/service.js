@@ -34,7 +34,7 @@ async function getOne(req, res, next) {
   }
 }
 
-async function createNew(req, res) {
+async function createNew(req, res, next) {
   const service = new Service();
   const { type, name, description, location, amount, amount_normal } = req.body;
   // configuramos datos a guardar
