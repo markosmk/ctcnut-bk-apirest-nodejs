@@ -3,7 +3,11 @@ const mongoose = require('mongoose');
 const serviceSchema = new mongoose.Schema({
   type: {
     type: String,
-    enum: ['Internet', 'Television', 'Packs'],
+    //enum: ['Internet', 'Television', 'Packs'],
+    enum: {
+      values: ['Internet', 'Television', 'Packs'],
+      message: '{VALUE} no esta permitido',
+    },
     required: true,
   },
   name: {
