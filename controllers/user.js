@@ -1,12 +1,6 @@
-const { findOne } = require('../models/user');
 const User = require('../models/user');
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 const jwt = require('../utils/jwt');
-
-async function generateHash(pass) {
-  const salt = bcrypt.genSaltSync(12);
-  return bcrypt.hash(pass, salt);
-}
 
 async function login(req, res, next) {
   const { email, password } = req.body;
@@ -29,6 +23,7 @@ async function login(req, res, next) {
     next(new Error(error));
   }
 }
+
 async function register(req, res, next) {
   const { email, password } = req.body;
   const user = new User({ email, password });
@@ -61,6 +56,7 @@ async function getAll(req, res, next) {
     next(error);
   }
 }
+
 async function getOne(req, res, next) {
   try {
     const user = await User.findById(req.params.id);
@@ -71,12 +67,35 @@ async function getOne(req, res, next) {
     next(error);
   }
 }
+
 function updateOne(req, res, next) {
   console.log('updating uno');
 }
 
-function uploadAvatar(req, res, next) {
-  console.log(req.files);
+async function uploadAvatar(req, res, next) {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    if (!user) {
+      res.status(500).send({ msg: 'error del servidor' });
+    }
+
+    if (req.file) {
+      const filePath = req.file.path;
+      const basePath = `${req.protocol}://${req.get('host')}/`;
+
+      user.avatar = basePath + filePath;
+      const updateUser = await user.save();
+
+      if (!updateUser) {
+        return next(new Error('Error al procesar la solicitud'));
+      }
+      res.send({ data: updateUser });
+    }
+  } catch (error) {
+    next(error);
+  }
 }
 
 module.exports = {
