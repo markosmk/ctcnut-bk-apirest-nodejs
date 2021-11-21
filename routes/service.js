@@ -1,15 +1,13 @@
-const express = require('express');
+const router = require('express').Router();
 const { validID } = require('../utils/helpers');
 // controlador
 const serviceController = require('../controllers/service');
 
-const app = express.Router();
-
 // rutas
-app.get('/service', serviceController.getAll);
-app.get('/service/:id', validID, serviceController.getOne);
-app.post('/service', serviceController.createNew);
-app.put('/service/:id', validID, serviceController.updateOne);
-app.delete('/service/:id', validID, serviceController.deleteOne);
+router.get('/service', serviceController.getAll);
+router.get('/service/:id', validID, serviceController.getOne);
+router.post('/service', serviceController.createNew);
+router.put('/service/:id', validID, serviceController.updateOne);
+router.delete('/service/:id', validID, serviceController.deleteOne);
 
-module.exports = app;
+module.exports = router;
