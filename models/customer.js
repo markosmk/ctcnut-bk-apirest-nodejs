@@ -48,7 +48,7 @@ const customerSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    serviceId: {
+    service: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       index: true,
