@@ -50,7 +50,7 @@ async function register(req, res, next) {
 
 async function getAll(req, res, next) {
   try {
-    const users = await User.find();
+    const users = await User.find().select('-password');
     res.status(200).send({ users });
   } catch (error) {
     next(error);
@@ -59,7 +59,9 @@ async function getAll(req, res, next) {
 
 async function getOne(req, res, next) {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id)
+      .populate('service')
+      .select('-password, -verificationToken');
     return !user
       ? next(new Error('No se encontraron resultados'))
       : res.status(200).send({ data: user });
