@@ -4,7 +4,7 @@ const swaggerUi = require('swagger-ui-express');
 const { errorHandler } = require('./utils/errorHandler');
 const app = express();
 
-// para recibir data en json
+// para parsear data en json
 app.use(express.json());
 
 const swaggerOptions = {
@@ -28,7 +28,7 @@ app.use('/api', serviceRoutes);
 app.use('/api', userRoutes);
 // documentacion de ApiRest con Swagger
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-// otras Rutas
+// resolucion rutas no asignadas
 app.get('*', function (req, res, next) {
   const error = new Error(`${req.ip} tried to access ${req.originalUrl}`);
   error.statusCode = 404;
