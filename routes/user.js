@@ -10,6 +10,7 @@ const { uploadImage } = require('../middlewares/uploadFiles');
 // rutas autenticacion
 router.post('/register', userController.register);
 router.post('/login', userController.login);
+router.get('/logout', userController.logout);
 // rutas usuario
 router.get('/user', validateRequest, userController.getAll);
 router.get('/user/:id', validateRequest, validID, userController.getOne);
