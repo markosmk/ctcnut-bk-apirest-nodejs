@@ -3,7 +3,7 @@ const Service = require('../models/service');
 
 async function getAll(_, res, next) {
   try {
-    // TODO recibir `req.query` para filtrar resutlados
+    // TODO recibir `req.query` para filtrar resultados
     const servicesAll = await Service.find({
       //type: 'Internet'
     }).sort({
@@ -21,8 +21,6 @@ async function getAll(_, res, next) {
 async function getOne(req, res, next) {
   try {
     const { id } = req.params;
-    // utilizaremos un middleware
-    // if (!mongoose.isValidObjectId(id)) return next(new Error('Identificador Invalido'));
 
     const service = await Service.findById(id);
 
@@ -35,18 +33,19 @@ async function getOne(req, res, next) {
 }
 
 async function createNew(req, res, next) {
-  const service = new Service();
   const { type, name, description, location, amount, amount_normal } = req.body;
-  // configuramos datos a guardar
-  service.type = type;
-  service.name = name;
-  service.description = description;
-  service.location = location;
-  service.amount = amount;
-  service.amount_normal = amount_normal;
+
+  const createService = new Service({
+    type,
+    name,
+    description,
+    location,
+    amount,
+    amount_normal,
+  });
 
   try {
-    const newService = await service.save();
+    const newService = await createService.save();
 
     return !newService
       ? next(new Error('Error al procesar la solicitud'))
@@ -87,6 +86,10 @@ async function deleteOne(req, res, next) {
   } catch (error) {
     return next(error);
   }
+}
+
+async function getServicesByUserId(req, res, next) {
+  const userId = req.params.uid;
 }
 
 module.exports = {
