@@ -24,6 +24,8 @@ async function login(req, res, next) {
   }
 }
 
+async function logout(req, res, next) {}
+
 async function register(req, res, next) {
   const { email, password } = req.body;
   const user = new User({ email, password });
@@ -32,9 +34,7 @@ async function register(req, res, next) {
     if (!email) throw 'Email es necesario';
     if (!password) throw 'Password es necesario';
 
-    // Comprobamos si el email esta utilizado
     const existsEmail = await User.findOne({ email });
-
     if (existsEmail) throw 'Email ya esta en uso';
 
     // const pass = await generateHash(password);
@@ -102,6 +102,7 @@ async function uploadAvatar(req, res, next) {
 
 module.exports = {
   login,
+  logout,
   register,
   getAll,
   getOne,
