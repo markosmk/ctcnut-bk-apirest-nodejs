@@ -7,6 +7,6 @@ module.exports = {
     'image/jpeg': 'jpeg',
     'image/jpg': 'jpg',
   },
-  FILE_MAX_SIZE: 1 * 1000000, //1MB (bytes)
-  FILE_MAX_CANT: 10, // maximo items
+  FILE_MAX_SIZE: 1 * 1000000, // 1MB (bytes)
+  FILE_MAX_CANT: 10, // items maximos permitidos
 };
