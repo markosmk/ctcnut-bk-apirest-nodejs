@@ -14,15 +14,20 @@ const serviceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    description: {
-      type: String,
-      required: true,
-    },
     amount: {
       type: String,
       required: true,
     },
     amount_normal: {
+      type: String,
+      required: true,
+    },
+    order: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+    description: {
       type: String,
       required: true,
     },
@@ -34,13 +39,17 @@ const serviceSchema = new mongoose.Schema(
       // para type PACKS
       type: String,
     },
-    location: {
-      type: String,
-      required: true,
-    },
+    location: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Location',
+        // index: true,
+      },
+    ],
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+    versionKey: false,
   }
 );
 

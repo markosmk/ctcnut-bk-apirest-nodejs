@@ -55,21 +55,24 @@ const userSchema = mongoose.Schema(
       required: false,
     },
     // datos de servicio
-    location: {
-      type: String,
-      required: false,
-      enum: {
-        values: ['Tunuyan', 'San-Rafael', 'Malargue'],
-        message: '{VALUE} no esta permitido',
+    locations: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Location',
+        required: false,
+        // index: true,
+        // relacionado 1 to Nan
       },
-    },
-    service: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Service',
-      required: false,
-      index: true,
-      // relacionado 1 to 1
-    },
+    ],
+    services: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Service',
+        required: false,
+        // index: true,
+        // relacionado 1 to Nan
+      },
+    ],
     // datos para admin/cuenta
     isAdmin: {
       type: Boolean,
@@ -92,22 +95,22 @@ const userSchema = mongoose.Schema(
       required: true,
       index: true,
       unique: true,
-      default: () => crypto.randomBytes(20).toString('hex'),
+      default: () => crypto.randomBytes(24).toString('hex'),
     },
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+    versionKey: false,
   }
 );
 
-// genera hash
 async function generateHash(pass) {
-  const salt = bcrypt.genSaltSync(12);
+  const salt = await bcrypt.genSalt(12);
   return await bcrypt.hash(pass, salt);
 }
 
 // al guardar hashear el password
-userSchema.pre('save', function preSave(next) {
+userSchema.pre('save', function (next) {
   const user = this;
   if (user.isModified('password')) {
     return generateHash(user.password)
