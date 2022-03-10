@@ -14,7 +14,11 @@ async function validateRequest(req, res, next) {
       });
     // verificamos (si devuelve true continuamos)
     const store = await verifyToken(token);
-    if (store) next();
+
+    if (store) {
+      req.user = store;
+      next();
+    }
   } catch (error) {
     return res.status(401).send({
       data: [],
