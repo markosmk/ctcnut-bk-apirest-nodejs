@@ -9,6 +9,7 @@ async function getAll(_, res, next) {
     }).sort({
       create_at: -1,
     });
+    // .populate('location');
 
     return !servicesAll
       ? next(new Error('Recursos No encontrados'))
@@ -22,7 +23,10 @@ async function getOne(req, res, next) {
   try {
     const { id } = req.params;
 
-    const service = await Service.findById(id);
+    const service = await Service.findById(id).populate({
+      path: 'location',
+      select: ['slug', 'name'],
+    });
 
     return !service
       ? next(new Error('Recurso No encontrado'))

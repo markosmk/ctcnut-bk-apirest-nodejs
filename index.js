@@ -14,8 +14,6 @@ mongoose.connect(
       if (err) {
         throw err;
       } else {
-        console.log('Connectados');
-
         app.listen(config.PORT, () => {
           console.log(`Escuchando puerto http://localhost:${config.PORT}`);
         });
