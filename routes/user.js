@@ -3,20 +3,19 @@ const router = require('express').Router();
 const userController = require('../controllers/user');
 
 // middlewares
-const { validID } = require('../utils/helpers');
+const validID = require('../middlewares/validID');
 const { validateRequest } = require('../middlewares/authenticated');
 const { uploadImage } = require('../middlewares/uploadFiles');
 
-// rutas autenticacion
-router.post('/register', userController.register);
-router.post('/login', userController.login);
-router.get('/logout', userController.logout);
 // rutas usuario
-router.get('/user', validateRequest, userController.getAll);
-router.get('/user/:id', validateRequest, validID, userController.getOne);
+router.get('/', validateRequest, userController.getAll);
+router.get('/:id', validateRequest, validID, userController.getOne);
+router.put('/:id', validateRequest, validID, userController.updateOne);
+router.delete('/:id', validateRequest, validID, userController.deleteOne);
 
+// aditionals
 router.put(
-  '/user/upload-avatar/:id',
+  '/upload-avatar/:id',
   validateRequest,
   validID,
   uploadImage.single('avatar'),
